@@ -16,7 +16,7 @@ const buildTransferQueryParam = ({value, search}) => {
   }
   const searchObj = queryString.parse(search);
   const {transfers: queryTransfers} = searchObj;
-  const transfers = (queryTransfers || '').split(DELIMITER).map(i => parseInt(i));
+  const transfers = (queryTransfers || '').split(DELIMITER).filter(Boolean).map(i => parseInt(i));
   const isCurrentTransferSelected = transfers.includes(value);
   const updatedTransfers = isCurrentTransferSelected ?
     transfers.filter(t => t !== value) :
@@ -75,11 +75,28 @@ const transfers = [
   },
 ];
 
-const Sidebar = ({selectedTransfers = [], currency}) => {
+const CURRENCY = {
+  RUB: 'RUB',
+  USD: 'USD',
+  EUR: 'EUR',
+};
+
+const Sidebar = ({location}) => {
+  const buildCurrencySearchString = currency => queryString.stringify({
+    ...queryString.parse(location.search),
+    currency: currency === CURRENCY.RUB ? undefined : currency,
+  });
   return (
     <div className="sidebar">
-      <div className="currency">
-
+      <div className="currencies">
+        {Object.keys(CURRENCY).map(cur => (
+          <NavLink
+            key={cur}
+            to={{ pathname: '/', search: buildCurrencySearchString(cur) }}
+          >
+            {cur}
+          </NavLink>
+        ))}
       </div>
       <div className="transfers">
         {Object.keys(transfers).map(key => (
@@ -93,4 +110,4 @@ const Sidebar = ({selectedTransfers = [], currency}) => {
   );
 };
 
-export default Sidebar
+export default withRouter(Sidebar);
