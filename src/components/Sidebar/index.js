@@ -1,77 +1,39 @@
 import React from 'react';
 import { withRouter } from 'react-router'
 import queryString from 'query-string';
+import {updateStopQuery, addQueryParams, isStopActive} from './../queryStringUtils';
 
 import { Link, NavLink } from "react-router-dom";
+import StopRow from './StopRow';
 
-const isTransferActive = (match, location) => {
-
-};
-
-const DELIMITER = ':';
-
-const buildTransferQueryParam = ({value, search}) => {
-  if (![].concat(value).length) {
-    return '';
-  }
-  const searchObj = queryString.parse(search);
-  const {transfers: queryTransfers} = searchObj;
-  const transfers = (queryTransfers || '').split(DELIMITER).filter(Boolean).map(i => parseInt(i));
-  const isCurrentTransferSelected = transfers.includes(value);
-  const updatedTransfers = isCurrentTransferSelected ?
-    transfers.filter(t => t !== value) :
-    transfers.concat(value);
-  return queryString.stringify({
-      ...searchObj,
-      transfers: updatedTransfers.join(DELIMITER),
-    });
-};
-
-const Row = ({transfer, location, ...props}) => {
-  return (
-    <div className="transfer-row">
-      <NavLink
-        className="transfer-checkbox"
-        activeClassName="transfer-checkbox_active"
-        isActive={isTransferActive}
-        to={{ pathname: '/', search: buildTransferQueryParam({value: transfer.value, search: location.search})}}
-        >
-        {transfer.label}
-      </NavLink>
-    </div>
-  );
-};
-
-const TransferRow = withRouter(Row);
+import './sidebar.css';
+import './../currency.css';
+import './../stop.css';
 
 const labels = {
   ALL: 'Все',
-  WITHOUT_TRANSFERS: 'Без пересадок',
-  ONE_TRANSFER: '1 пересадка',
-  TWO_TRANSFERS: '2 пересадки',
-  THREE_TRANSFERS: '3 пересадки',
+  WITHOUT: 'Без пересадок',
+  ONE: '1 пересадка',
+  TWO: '2 пересадки',
+  THREE: '3 пересадки',
 };
 
-const transfers = [
-  {
-    value: [],
-    label: labels.ALL,
-  },
+const stops = [
   {
     value: 0,
-    label: labels.WITHOUT_TRANSFERS,
+    label: labels.WITHOUT,
   },
   {
     value: 1,
-    label: labels.ONE_TRANSFER,
+    label: labels.ONE,
   },
   {
     value: 2,
-    label: labels.TWO_TRANSFERS,
+    label: labels.TWO,
   },
   {
     value: 3,
-    label: labels.THREE_TRANSFERS,
+    label: labels.THREE,
   },
 ];
 
@@ -82,26 +44,43 @@ const CURRENCY = {
 };
 
 const Sidebar = ({location}) => {
-  const buildCurrencySearchString = currency => queryString.stringify({
-    ...queryString.parse(location.search),
+  const updateCurrencyQuery = currency => addQueryParams(location.search, {
     currency: currency === CURRENCY.RUB ? undefined : currency,
   });
+  const allStops = Object.keys(stops).reduce((res, idx) => res.concat(stops[idx].value), []);
   return (
     <div className="sidebar">
       <div className="currencies">
         {Object.keys(CURRENCY).map(cur => (
           <NavLink
             key={cur}
-            to={{ pathname: '/', search: buildCurrencySearchString(cur) }}
+            className="currency"
+            activeClassName="currency_selected"
+            isActive={(match, location) => {
+              const currentCur = queryString.parse(location.search).currency;
+              return (currentCur || CURRENCY.RUB) === cur;
+            }}
+            to={{ pathname: '/', search: updateCurrencyQuery(cur) }}
           >
             {cur}
           </NavLink>
         ))}
       </div>
       <div className="transfers">
-        {Object.keys(transfers).map(key => (
-          <TransferRow
-            transfer={transfers[key]}
+        <div className="stop-row">
+          <NavLink
+            className="stop"
+            activeClassName="stop_selected"
+            isActive={isStopActive(allStops)}
+            to={{ pathname: '/', search: updateStopQuery({value: allStops, search: location.search})}}
+          >
+            {labels.ALL}
+          </NavLink>
+        </div>
+        {Object.keys(stops).map(key => (
+          <StopRow
+            stop={stops[key]}
+            search={location.search}
             key={key}
           />
         ))}

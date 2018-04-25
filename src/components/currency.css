@@ -1,0 +1,43 @@
+.currencies {
+  display: flex;
+  padding: 15px;
+
+  .currency {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 100%;
+    border: 1px solid #d2d5d6;
+    margin-right: -1px;
+    text-decoration: none;
+    color: #2196f3;
+
+    &:first-child {
+      border-radius: 5px 0 0 5px;
+    }
+
+    &:last-child {
+      border-radius: 0 5px 5px 0;
+      margin-right: 0;
+    }
+
+    &:hover {
+      border-color: #64b5f5;
+      background: #f2fcff;
+      z-index: 1;
+    }
+
+    &.currency_selected {
+      background: #2196f3;
+      color: #ffffff;
+      border-color: #2196f3;
+
+      &:hover {
+        border-color: #2196f3;
+      }
+    }
+  }
+}
+
