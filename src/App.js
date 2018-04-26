@@ -1,5 +1,7 @@
 import React, {Component, Fragment} from 'react';
-import {BrowserRouter as Router, Route, Link} from "react-router-dom";
+import {BrowserRouter as Router} from "react-router-dom";
+
+import './App.css';
 
 import Sidebar from './components/Sidebar';
 import Tickets from './components/Tickets';

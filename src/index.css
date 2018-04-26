@@ -1,3 +1,16 @@
+:root {
+  --base-text-color: #4a4a4a;
+  --secondary-text-color: #8b9497;
+  --sidebar-padding: 15px;
+}
+
+@font-face {
+  font-family: "Open Sans Regular";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/OpenSans-Regular.woff") format("woff");
+}
+
 * {
   box-sizing: border-box;
 }
@@ -5,9 +18,109 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: "Open Sans Regular";
+  color: var(--base-text-color);
+}
 
-  & .app {
-    color: red;
+.sidebar {
+  background: #fff;
+  width: 232px;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(91, 137, 164, 0.25);
+  padding: 15px 0;
+
+  .sidebar-section-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    padding: 8px 15px 18px;
   }
 }
+
+.stop-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 36px;
+  padding: 0 15px;
+
+  &:hover {
+    background: #f1fcff;
+  }
+
+  .stop-only {
+    color: #2196f3;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 11px;
+  }
+
+  .stop {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    text-decoration: none;
+    color: var(--base-text-color);
+
+    &:before {
+      content: '';
+      display: flex;
+      width: 19px;
+      height: 19px;
+      border-radius: 3px;
+      border: 1px solid #d2d5d6;
+      margin-right: 10px;
+    }
+
+    &.stop_selected {
+      &:before {
+        background: url("./assets/images/check.svg") no-repeat 50% 50%;
+        border-color: #2196f3;
+      }
+    }
+  }
+}
+
+.currencies {
+  display: flex;
+  padding: 0 15px 38px;
+
+  .currency {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 100%;
+    border: 1px solid #d2d5d6;
+    margin-right: -1px;
+    text-decoration: none;
+    color: #2196f3;
+
+    &:first-child {
+      border-radius: 5px 0 0 5px;
+    }
+
+    &:last-child {
+      border-radius: 0 5px 5px 0;
+      margin-right: 0;
+    }
+
+    &:hover {
+      border-color: #64b5f5;
+      background: #f2fcff;
+      z-index: 2;
+    }
+
+    &.currency_selected {
+      background: #2196f3;
+      color: #ffffff;
+      border-color: #2196f3;
+      z-index: 1;
+
+      &:hover {
+        border-color: #2196f3;
+      }
+    }
+  }
+}
+

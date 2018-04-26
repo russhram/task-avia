@@ -1,9 +1,8 @@
 import queryString from 'query-string';
-
-const STOP_DELIMITER = ':';
+import {CURRENCY, STOP_DELIMITER} from './constants';
 
 const getStopsFromQuery = (search) => (queryString.parse(search).stops || '').split(STOP_DELIMITER)
-  .filter(Boolean).map(i => parseInt(i));
+  .filter(Boolean).map(i => parseInt(i, 10));
 
 export const addQueryParams = (search, params) => queryString.stringify({
   ...queryString.parse(search),
@@ -26,4 +25,4 @@ export const isStopActive = value => (match, location) => {
   return stops.every(i => stopsFromQuery.includes(i));
 };
 
-
+export const parseCurrencyFromQS = search => queryString.parse(search).currency || CURRENCY.RUB;

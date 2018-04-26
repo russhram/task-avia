@@ -2,54 +2,20 @@ import React from 'react';
 import { withRouter } from 'react-router'
 import queryString from 'query-string';
 import {updateStopQuery, addQueryParams, isStopActive} from './../queryStringUtils';
+import {CURRENCY, STOPS} from './../constants';
+import labels from './../labels';
 
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import StopRow from './StopRow';
-
-import './sidebar.css';
-import './../currency.css';
-import './../stop.css';
-
-const labels = {
-  ALL: 'Все',
-  WITHOUT: 'Без пересадок',
-  ONE: '1 пересадка',
-  TWO: '2 пересадки',
-  THREE: '3 пересадки',
-};
-
-const stops = [
-  {
-    value: 0,
-    label: labels.WITHOUT,
-  },
-  {
-    value: 1,
-    label: labels.ONE,
-  },
-  {
-    value: 2,
-    label: labels.TWO,
-  },
-  {
-    value: 3,
-    label: labels.THREE,
-  },
-];
-
-const CURRENCY = {
-  RUB: 'RUB',
-  USD: 'USD',
-  EUR: 'EUR',
-};
 
 const Sidebar = ({location}) => {
   const updateCurrencyQuery = currency => addQueryParams(location.search, {
     currency: currency === CURRENCY.RUB ? undefined : currency,
   });
-  const allStops = Object.keys(stops).reduce((res, idx) => res.concat(stops[idx].value), []);
+  const allStops = Object.keys(STOPS).reduce((res, idx) => res.concat(STOPS[idx].value), []);
   return (
     <div className="sidebar">
+      <div className="sidebar-section-title">{labels.CURRENCY}</div>
       <div className="currencies">
         {Object.keys(CURRENCY).map(cur => (
           <NavLink
@@ -66,7 +32,8 @@ const Sidebar = ({location}) => {
           </NavLink>
         ))}
       </div>
-      <div className="transfers">
+      <div className="sidebar-section-title">{labels.STOPS_TOTAL}</div>
+      <div className="stops">
         <div className="stop-row">
           <NavLink
             className="stop"
@@ -77,9 +44,9 @@ const Sidebar = ({location}) => {
             {labels.ALL}
           </NavLink>
         </div>
-        {Object.keys(stops).map(key => (
+        {Object.keys(STOPS).map(key => (
           <StopRow
-            stop={stops[key]}
+            stop={STOPS[key]}
             search={location.search}
             key={key}
           />

@@ -1,5 +1,8 @@
 import React from 'react';
-import {withState, lifecycle, compose} from 'recompose';
+import { withState, lifecycle, compose } from 'recompose';
+import { withRouter } from 'react-router';
+import Ticket from './Ticket';
+import {parseCurrencyFromQS} from "../queryStringUtils";
 
 const callApi = async () => {
   const response = await fetch('http://localhost:3000/tickets');
@@ -7,7 +10,8 @@ const callApi = async () => {
 };
 
 const enhance = compose(
-  withState('tickets', 'setTickets', false),
+  withRouter,
+  withState('tickets', 'setTickets', []),
   lifecycle({
     componentDidMount() {
       callApi().then(({tickets}) => {
@@ -17,8 +21,15 @@ const enhance = compose(
   })
 );
 
-const Tickets = ({tickets}) => {
-  return <div>Tickets</div>
+const Tickets = ({tickets, location}) => {
+  return (
+    <div className="tickets">
+      {tickets.map(t => <Ticket ticket={t}
+                                currency={parseCurrencyFromQS(location.search)}
+                                key={Object.values(t).join('')}/>
+      )}
+    </div>
+  );
 };
 
 export default enhance(Tickets);
