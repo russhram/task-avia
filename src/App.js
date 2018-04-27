@@ -6,8 +6,6 @@ import classNames from 'classnames';
 import Sidebar from './components/Sidebar';
 import Tickets from './components/Tickets';
 
-import './App.css';
-
 const enhance = compose(
   withState('tickets', 'setTickets', []),
   withState('rates', 'setRates', {}),
