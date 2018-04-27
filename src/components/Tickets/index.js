@@ -2,7 +2,7 @@ import React from 'react';
 import { withState, lifecycle, compose } from 'recompose';
 import { withRouter } from 'react-router';
 import Ticket from './Ticket';
-import {parseCurrencyFromQS} from "../queryStringUtils";
+import {parseCurrencyFromQS, parseStopsFromQS} from "../queryStringUtils";
 
 const callApi = async (url) => {
   const response = await fetch(url);
@@ -26,10 +26,16 @@ const enhance = compose(
 );
 
 const Tickets = ({tickets, rates, location}) => {
+  const stops = parseStopsFromQS(location.search);
+  const currency = parseCurrencyFromQS(location.search);
+  const filteredTickets = tickets
+    .sort((a, b) => a.price > b.price)
+    .filter(ticket => stops.some(i => i === ticket.stops));
+
   return (
     <div className="tickets">
-      {tickets.map(t => <Ticket ticket={t}
-                                currency={parseCurrencyFromQS(location.search)}
+      {filteredTickets.map(t => <Ticket ticket={t}
+                                currency={currency}
                                 rates={rates}
                                 key={Object.values(t).join('')}/>
       )}
