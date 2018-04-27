@@ -6,7 +6,9 @@ const labels = {
   AT: 'за',
 };
 
-const formatPrice = (price, currency) => price.toLocaleString('ru', {style: 'currency', currency});
+const convertPrice = ({price, rates, currency}) => (price / rates.RUB) * rates[currency];
+const formatPrice = ({price, currency, rates}) => convertPrice({price, currency, rates})
+  .toLocaleString('ru', {style: 'currency', currency});
 const dateToLocaleString = (date, options) => (new Date(date)).toLocaleString('ru', options);
 const formatDate = date => `${dateToLocaleString(date, {
   year: 'numeric',
@@ -14,7 +16,7 @@ const formatDate = date => `${dateToLocaleString(date, {
   day: 'numeric'
 })}, ${dateToLocaleString(date, {weekday: 'short'})}`;
 
-const Ticket = ({currency, ticket}) => (
+const Ticket = ({currency, ticket, rates}) => (
   <div className="ticket">
     <div className="ticket-action">
       <div className="ticket-airline">
@@ -22,7 +24,7 @@ const Ticket = ({currency, ticket}) => (
       </div>
       <div className="ticket-action-button">
         {`${labels.BUY}
-        ${labels.AT} ${formatPrice(ticket.price, currency)}`}
+        ${labels.AT} ${formatPrice({price: ticket.price, currency, rates})}`}
       </div>
     </div>
     <div className="ticket-details">
