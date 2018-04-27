@@ -5,6 +5,7 @@
   border-radius: 5px;
   box-shadow: 0 1px 4px rgba(91, 137, 164, .25);
   margin-bottom: 20px;
+  background: #ffffff;
 
   &:hover {
     box-shadow: 0 10px 50px rgba(91, 137, 164, .25);
@@ -15,6 +16,7 @@
     padding: 0 20px 25px;
     border-right: 1px solid #eceff1;
     display: flex;
+    flex-shrink: 0;
     flex-direction: column;
 
     .ticket-airline {

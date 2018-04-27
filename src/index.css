@@ -11,6 +11,15 @@
   src: url("./assets/fonts/OpenSans-Regular.woff") format("woff");
 }
 
+@keyframes rotating {
+  from {
+    transform: rotateZ(0deg);
+  }
+  to {
+    transform: rotateZ(360deg);
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -20,6 +29,44 @@ body {
   padding: 0;
   font-family: "Open Sans Regular";
   color: var(--base-text-color);
+  background: #f3f7fA;
+}
+
+.app {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.logo {
+  background: url("./assets/images/Logo.svg") no-repeat 50% 50%;
+  width: 61px;
+  height: 61px;
+  margin: 50px 0;
+  cursor: pointer;
+
+  &.logo_spin {
+     animation: rotating 2s linear infinite;
+   }
+}
+
+.content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  max-width: 818px;
+
+  .sidebar {
+    margin-right: 20px;
+    flex-grow: 1;
+  }
+
+  .tickets {
+    flex-grow: 1;
+    width: 100%;
+  }
 }
 
 .sidebar {
@@ -28,11 +75,12 @@ body {
   border-radius: 5px;
   box-shadow: 0 1px 4px rgba(91, 137, 164, 0.25);
   padding: 15px 0;
+  flex-shrink: 0;
 
   .sidebar-section-title {
     font-size: 12px;
     text-transform: uppercase;
-    padding: 8px 15px 18px;
+    padding: 0 15px 14px;
   }
 }
 
@@ -82,7 +130,7 @@ body {
 
 .currencies {
   display: flex;
-  padding: 0 15px 38px;
+  padding: 0 15px 27px;
 
   .currency {
     position: relative;
