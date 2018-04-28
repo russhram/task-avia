@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { STOPS } from '../constants';
 import labels from '../labels';
+import TK from './../../assets/images/turkish-airlines.png';
+import SU from './../../assets/images/aeroflot.png';
+import S7 from './../../assets/images/S7.png';
+import BA from './../../assets/images/british-airlines.png';
 
 const convertPrice = ({ price, rates, currency }) => (price / rates.RUB) * rates[currency];
 const formatPrice = ({ price, currency, rates }) => convertPrice({ price, currency, rates })
@@ -13,11 +17,17 @@ const formatDate = date => `${dateToLocaleString(date, {
   day: 'numeric',
 })}, ${dateToLocaleString(date, { weekday: 'short' })}`;
 
+const LOGO = { TK, SU, S7, BA };
+
 const Ticket = ({ currency, ticket, rates }) => (
   <div className="ticket">
     <div className="ticket-action">
       <div className="ticket-airline">
-        {ticket.carrier}
+        <img
+          className="ticket-carrier-logo"
+          src={LOGO[ticket.carrier]}
+          alt={ticket.carrier}
+        />
       </div>
       <div className="ticket-action-button">
         {`${labels.BUY}
