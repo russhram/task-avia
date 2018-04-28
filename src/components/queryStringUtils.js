@@ -18,9 +18,9 @@ export const addQueryParams = (search, params) => queryString.stringify({
 export const updateStopQuery = ({ value, search }) => {
   const stops = [].concat(value);
   const stopsFromQuery = parseStopsFromQS(search);
-  const isCurrentStopSelected = stops.every(v => stopsFromQuery.includes(v));
+  const isCurrentStopSelected = stops.every(v => stopsFromQuery.some(i => i === v));
   const updatedStops = isCurrentStopSelected ?
-    stopsFromQuery.filter(t => !stops.includes(t)) :
+    stopsFromQuery.filter(t => !stops.some(i => i === t)) :
     stopsFromQuery.concat(value);
   return addQueryParams(search, { stops: updatedStops.join(STOP_DELIMITER) });
 };
@@ -28,7 +28,7 @@ export const updateStopQuery = ({ value, search }) => {
 export const isStopActive = value => (match, location) => {
   const stops = [].concat(value);
   const stopsFromQuery = parseStopsFromQS(location.search);
-  return stops.every(i => stopsFromQuery.includes(i));
+  return stops.every(s => stopsFromQuery.some(i => i === s));
 };
 
 export const parseCurrencyFromQS = search => queryString.parse(search).currency || CURRENCY.RUB;
