@@ -1,14 +1,14 @@
 import React from 'react';
-import { withRouter } from 'react-router'
+import { withRouter } from 'react-router';
+import { NavLink } from 'react-router-dom';
 import queryString from 'query-string';
-import {updateStopQuery, addQueryParams, isStopActive} from './../queryStringUtils';
-import {CURRENCY, STOPS} from './../constants';
+import PropTypes from 'prop-types';
+import { updateStopQuery, addQueryParams, isStopActive } from './../queryStringUtils';
+import { CURRENCY, STOPS } from './../constants';
 import labels from './../labels';
-
-import { NavLink } from "react-router-dom";
 import StopRow from './StopRow';
 
-const Sidebar = ({location}) => {
+const Sidebar = ({ location }) => {
   const updateCurrencyQuery = currency => addQueryParams(location.search, {
     currency: currency === CURRENCY.RUB ? undefined : currency,
   });
@@ -22,8 +22,8 @@ const Sidebar = ({location}) => {
             key={cur}
             className="currency"
             activeClassName="currency_selected"
-            isActive={(match, location) => {
-              const currentCur = queryString.parse(location.search).currency;
+            isActive={(match, loc) => {
+              const currentCur = queryString.parse(loc.search).currency;
               return (currentCur || CURRENCY.RUB) === cur;
             }}
             to={{ pathname: '/', search: updateCurrencyQuery(cur) }}
@@ -39,7 +39,7 @@ const Sidebar = ({location}) => {
             className="stop"
             activeClassName="stop_selected"
             isActive={isStopActive(allStops)}
-            to={{ pathname: '/', search: updateStopQuery({value: allStops, search: location.search})}}
+            to={{ pathname: '/', search: updateStopQuery({ value: allStops, search: location.search }) }}
           >
             {labels.ALL}
           </NavLink>
@@ -54,6 +54,10 @@ const Sidebar = ({location}) => {
       </div>
     </div>
   );
+};
+
+Sidebar.propTypes = {
+  location: PropTypes.shape({}).isRequired,
 };
 
 export default withRouter(Sidebar);

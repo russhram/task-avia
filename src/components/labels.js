@@ -6,4 +6,7 @@ export default {
   TWO: '2 пересадки',
   THREE: '3 пересадки',
   CURRENCY: 'Валюта',
+  BUY: 'Купить',
+  AT: 'за',
+  ONLY: 'Только',
 };

@@ -1,5 +1,5 @@
 import queryString from 'query-string';
-import {CURRENCY, STOP_DELIMITER, STOPS} from './constants';
+import { CURRENCY, STOP_DELIMITER, STOPS } from './constants';
 
 export const parseStopsFromQS = (search) => {
   const stops = (queryString.parse(search).stops || '').split(STOP_DELIMITER)
@@ -15,14 +15,14 @@ export const addQueryParams = (search, params) => queryString.stringify({
   ...params,
 });
 
-export const updateStopQuery = ({value, search}) => {
+export const updateStopQuery = ({ value, search }) => {
   const stops = [].concat(value);
   const stopsFromQuery = parseStopsFromQS(search);
   const isCurrentStopSelected = stops.every(v => stopsFromQuery.includes(v));
   const updatedStops = isCurrentStopSelected ?
     stopsFromQuery.filter(t => !stops.includes(t)) :
     stopsFromQuery.concat(value);
-  return addQueryParams(search, {stops: updatedStops.join(STOP_DELIMITER)});
+  return addQueryParams(search, { stops: updatedStops.join(STOP_DELIMITER) });
 };
 
 export const isStopActive = value => (match, location) => {

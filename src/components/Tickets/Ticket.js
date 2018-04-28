@@ -1,22 +1,19 @@
 import React from 'react';
-import {STOPS} from "../constants";
+import PropTypes from 'prop-types';
+import { STOPS } from '../constants';
+import labels from '../labels';
 
-const labels = {
-  BUY: 'Купить',
-  AT: 'за',
-};
-
-const convertPrice = ({price, rates, currency}) => (price / rates.RUB) * rates[currency];
-const formatPrice = ({price, currency, rates}) => convertPrice({price, currency, rates})
-  .toLocaleString('ru', {style: 'currency', currency});
+const convertPrice = ({ price, rates, currency }) => (price / rates.RUB) * rates[currency];
+const formatPrice = ({ price, currency, rates }) => convertPrice({ price, currency, rates })
+  .toLocaleString('ru', { style: 'currency', currency });
 const dateToLocaleString = (date, options) => (new Date(date)).toLocaleString('ru', options);
 const formatDate = date => `${dateToLocaleString(date, {
   year: 'numeric',
   month: 'short',
-  day: 'numeric'
-})}, ${dateToLocaleString(date, {weekday: 'short'})}`;
+  day: 'numeric',
+})}, ${dateToLocaleString(date, { weekday: 'short' })}`;
 
-const Ticket = ({currency, ticket, rates}) => (
+const Ticket = ({ currency, ticket, rates }) => (
   <div className="ticket">
     <div className="ticket-action">
       <div className="ticket-airline">
@@ -24,7 +21,7 @@ const Ticket = ({currency, ticket, rates}) => (
       </div>
       <div className="ticket-action-button">
         {`${labels.BUY}
-        ${labels.AT} ${formatPrice({price: ticket.price, currency, rates})}`}
+        ${labels.AT} ${formatPrice({ price: ticket.price, currency, rates })}`}
       </div>
     </div>
     <div className="ticket-details">
@@ -32,23 +29,29 @@ const Ticket = ({currency, ticket, rates}) => (
         <div className="ticket-time">{ticket.departure_time}</div>
         <div className="ticket-stops">
           <div className="ticket-stops-label">{STOPS[ticket.stops].label}</div>
-          <div className="ticket-line"/>
+          <div className="ticket-line" />
         </div>
         <div className="ticket-time">{ticket.arrival_time}</div>
       </div>
       <div className="ticket-ways">
-          {[
-            [ticket.origin, ticket.origin_name, ticket.departure_date],
-            [ticket.destination, ticket.destination_name, ticket.arrival_date]
-          ].map(([way, way_name, date]) => (
-            <div className="ticket-way" key={way}>
-              <div className="ticket-way-title">{`${way}, ${way_name}`}</div>
-              <div className="ticket-way-date">{formatDate(date)}</div>
-            </div>
-          ))}
+        {[
+          [ticket.origin, ticket.origin_name, ticket.departure_date],
+          [ticket.destination, ticket.destination_name, ticket.arrival_date],
+        ].map(([way, wayName, date]) => (
+          <div className="ticket-way" key={way}>
+            <div className="ticket-way-title">{`${way}, ${wayName}`}</div>
+            <div className="ticket-way-date">{formatDate(date)}</div>
+          </div>
+        ))}
       </div>
     </div>
   </div>
 );
+
+Ticket.propTypes = {
+  currency: PropTypes.string.isRequired,
+  ticket: PropTypes.shape({}).isRequired,
+  rates: PropTypes.shape({}).isRequired,
+};
 
 export default Ticket;

@@ -1,9 +1,10 @@
 import React from 'react';
 import { withRouter } from 'react-router';
+import PropTypes from 'prop-types';
 import Ticket from './Ticket';
-import {parseCurrencyFromQS, parseStopsFromQS} from "../queryStringUtils";
+import { parseCurrencyFromQS, parseStopsFromQS } from '../queryStringUtils';
 
-const Tickets = ({tickets, rates, location}) => {
+const Tickets = ({ tickets, rates, location }) => {
   const stops = parseStopsFromQS(location.search);
   const currency = parseCurrencyFromQS(location.search);
   const filteredTickets = tickets
@@ -12,13 +13,22 @@ const Tickets = ({tickets, rates, location}) => {
 
   return (
     <div className="tickets">
-      {filteredTickets.map(t => <Ticket ticket={t}
-                                currency={currency}
-                                rates={rates}
-                                key={Object.values(t).join('')}/>
-      )}
+      {filteredTickets.map(t => (
+        <Ticket
+          ticket={t}
+          currency={currency}
+          rates={rates}
+          key={Object.values(t).join('')}
+        />
+      ))}
     </div>
   );
+};
+
+Tickets.propTypes = {
+  tickets: PropTypes.array.isRequired,
+  rates: PropTypes.shape({}).isRequired,
+  location: PropTypes.shape({}).isRequired,
 };
 
 export default withRouter(Tickets);
