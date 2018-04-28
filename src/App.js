@@ -11,17 +11,20 @@ const enhance = compose(
   withState('rates', 'setRates', {}),
   withState('isLoading', 'setLoading', true),
   withHandlers({
-    callApi: props => async (url) => {
-      props.setLoading(true);
-      const response = await fetch(url); // eslint-disable-line no-undef
-      const result = await response.json();
-      props.setLoading(false);
-      return result;
+    callApi: props => async (url) => { // eslint-disable-line consistent-return
+      try {
+        props.setLoading(true);
+        const response = await fetch(url); // eslint-disable-line no-undef
+        const result = await response.json();
+        return result;
+      } finally {
+        props.setLoading(false);
+      }
     },
   }),
   withHandlers({
     requestData: props => () => {
-      props.callApi('http://localhost:3000/tickets').then(({ tickets }) => {
+      props.callApi('/tickets').then(({ tickets }) => {
         props.setTickets(tickets);
       });
       props.callApi('http://data.fixer.io/api/latest?access_key=80db75b40686aafe8ba34708ac6f45ba').then(({ rates }) => {

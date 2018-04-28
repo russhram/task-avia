@@ -72,6 +72,10 @@ body {
             border-right: none;
             border-bottom: 1px solid #eceff1;
           }
+
+          .ticket-airline {
+            padding-bottom: 20px;
+          }
         }
       }
     }
@@ -287,12 +291,16 @@ body {
       .ticket-stops {
         padding: 7px 22px 0;
         width: 100%;
+        overflow: hidden;
 
         .ticket-stops-label {
           color: var(--secondary-text-color);
           font-size: 10px;
           text-transform: uppercase;
           text-align: center;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
         }
 
         .ticket-line {
