@@ -39,7 +39,7 @@ const enhance = compose(
   }),
 );
 
-const App = enhance(({ tickets, rates, isLoading, requestData, ...props }) => (
+const App = enhance(({ tickets, rates = {}, isLoading, requestData, ...props }) => (
   <Router>
     <Fragment>
       <div

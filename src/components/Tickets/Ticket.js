@@ -7,7 +7,7 @@ import SU from './../../assets/images/aeroflot.png';
 import S7 from './../../assets/images/S7.png';
 import BA from './../../assets/images/british-airlines.png';
 
-const convertPrice = ({ price, rates, currency }) => (price / rates.RUB) * rates[currency];
+const convertPrice = ({ price, rates, currency }) => (price / (rates.RUB || 1)) * (rates[currency] || 1); // eslint-disable-line max-len
 const formatPrice = ({ price, currency, rates }) => convertPrice({ price, currency, rates })
   .toLocaleString('ru', { style: 'currency', currency });
 const convertDateToArr = (date) => {
