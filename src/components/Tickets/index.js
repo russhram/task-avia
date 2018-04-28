@@ -18,7 +18,7 @@ const Tickets = ({ tickets, rates, location }) => {
           ticket={t}
           currency={currency}
           rates={rates}
-          key={Object.keys(t).reduce((res, cur) => res + t[cur], '')}
+          key={Object.values(t).join('')}
         />
       ))}
     </div>
