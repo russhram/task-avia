@@ -10,7 +10,11 @@ import BA from './../../assets/images/british-airlines.png';
 const convertPrice = ({ price, rates, currency }) => (price / rates.RUB) * rates[currency];
 const formatPrice = ({ price, currency, rates }) => convertPrice({ price, currency, rates })
   .toLocaleString('ru', { style: 'currency', currency });
-const dateToLocaleString = (date, options) => (new Date(date)).toLocaleString('ru', options);
+const convertDateToArr = (date) => {
+  const dateArr = date.split('.').reverse();
+  return [dateArr[0].length === 2 ? `20${dateArr[0]}` : dateArr[0]].concat(dateArr.slice(1));
+};
+const dateToLocaleString = (date, options) => (new Date(...convertDateToArr(date))).toLocaleString('ru', options);
 const formatDate = date => `${dateToLocaleString(date, {
   year: 'numeric',
   month: 'short',
